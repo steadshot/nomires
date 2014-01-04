@@ -1,3 +1,0 @@
-Holis.
-
-Este es NoMires
