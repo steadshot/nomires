@@ -1,31 +1,15 @@
 import pygame, sys
 from pygame.locals import *
+import piece
 
 block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
-playfield[2][3] = 1
-playfield[5][10] = 1
 start_x = 50
 start_y = 100
 
-t_pieces = [
-		[1, 0, 0, 0],
-		[1, 1, 0, 0],
-		[1, 0, 0, 0],
-		[0, 0, 0, 0],
-		]
-
-i_piece = [
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		]
-
 piece_position = (3, 0)
 
-current_piece = i_piece
-
+current_piece = piece.getPiece()
 
 def drawField(screen):
 	"""draws a field, big whoop"""
@@ -51,6 +35,24 @@ def drawBorder(screen):
 
 
 
+def rotatePiece(screen, rotation):
+	global current_piece
+	if rotation == "cw":
+		piece.rotate('cw')
+		if not outOfBounds(piece_position, piece.getPiece()):
+			current_piece = piece.getPiece()
+		else:
+			piece.rotate('ccw')
+	elif rotation == "ccw":
+		piece.rotate('ccw')
+		if not outOfBounds(piece_position, piece.getPiece()):
+			current_piece = piece.getPiece()
+		else:
+			piece.rotate('cw')
+
+	drawField(DISPLAYSURF)
+	drawPiece(DISPLAYSURF)
+	drawBorder(DISPLAYSURF)
 
 
 def movePiece(screen, key):
@@ -63,19 +65,18 @@ def movePiece(screen, key):
 		new_piece_position = (piece_position[0] - 1, piece_position[1])
 	elif key == "RIGHT":
 		new_piece_position = (piece_position[0] + 1, piece_position[1])
-	if not outOfBounds(new_piece_position):
+	if not outOfBounds(new_piece_position, current_piece):
 		piece_position = new_piece_position
 	drawField(screen)
 	drawPiece(screen)
 	drawBorder(screen)
 	
-def outOfBounds(position):
-	for i, line in enumerate(current_piece):
+def outOfBounds(position, piece):
+	for i, line in enumerate(piece):
 		for j,x in enumerate(line):
 			if x == 1:
 				if (not i + position[0] in range(10)) or (not j + position[1] in range(20)):
 					return True
-	
 	return False
 
 
@@ -91,10 +92,19 @@ while True:
 			pygame.quit()
 			sys.exit()
 		if event.type == KEYDOWN:
+			if event.key == K_z:
+				rotatePiece(DISPLAYSURF, 'ccw')
+			if event.key == K_x:
+				rotatePiece(DISPLAYSURF, 'cw')
+
 			if event.key == K_DOWN:
+
 				movePiece(DISPLAYSURF, "DOWN")
 			if event.key == K_UP:
-				movePiece(DISPLAYSURF, "UP")
+				#movePiece(DISPLAYSURF, "UP")
+				pass
+
+
 			if event.key == K_RIGHT:
 				movePiece(DISPLAYSURF, "RIGHT")
 			if event.key == K_LEFT:

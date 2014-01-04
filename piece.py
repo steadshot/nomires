@@ -24,12 +24,19 @@ t_piece = [
 		[0, 0, 0, 0],
 		]
 	]
+
 rotation_state = 0
 
+piece = t_piece
+
+def getPiece():
+	return piece[rotation_state]
+
 def rotate(direction):
-	if direction == "ccw":
+	global rotation_state
+	if direction == "cw":
 		rotation_state = (rotation_state - 1) % 4
-	elif direction == "cw":
+	elif direction == "ccw":
 		rotation_state = (rotation_state + 1) % 4
 
 i_piece = [
@@ -69,6 +76,3 @@ o_piece = [
 		[1, 1, 0, 0],
 		[0, 0, 0, 0],
 		]
-def rotate_piece():
-	
-
