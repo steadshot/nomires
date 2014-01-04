@@ -1,6 +1,7 @@
 import pygame, sys
 from pygame.locals import *
 import piece
+import random
 
 block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
@@ -62,10 +63,9 @@ while True:
 				piece.movePiece("DOWN")
 				refresh(DISPLAYSURF)
 			if event.key == K_UP:
-				#movePiece(DISPLAYSURF, "UP")
-				pass
-
-
+				piece.setPiece(random.randint(0,6))
+				current_piece = piece.getPiece()
+				refresh(DISPLAYSURF)
 			if event.key == K_RIGHT:
 				piece.movePiece("RIGHT")
 				refresh(DISPLAYSURF)
