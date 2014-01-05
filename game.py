@@ -40,12 +40,22 @@ def refresh(screen):
 	drawBorder(screen)
 
 
-
 def addToPlayfield():
+	global playfield
 	for i, line in enumerate(piece.getPiece()):
 		for j, x in enumerate(line):
 			if x == 1:
 				playfield[piece.piece_position[0] + i][piece.piece_position[1] + j] = 1
+
+	# check if there are lines to clear
+
+	flipped = [[playfield[i][j] for i in range(10)] for j in range(20)]
+	for i, line in enumerate(flipped):
+		if reduce(lambda x,y: x + y, line) == 10:
+			flipped[i] = [0]*10
+			for j in range(1, i + 1)[::-1]:
+				flipped[j] = flipped[j - 1]
+	playfield = [[flipped[i][j] for i in range(20)] for j in range(10)]
 
 def printField():
 	for line in playfield:
@@ -56,12 +66,22 @@ DISPLAYSURF = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('nomires - where tetris goes to die')
 clock = pygame.time.Clock()
 refresh(DISPLAYSURF)
+game_over = False
 while True:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
 			sys.exit()
 		if event.type == KEYDOWN:
+			if event.key == K_r:
+				playfield = [[0 for i in range(20)] for j in range(10)]
+				refresh(DISPLAYSURF)
+				game_over = False
+			if event.key == K_RETURN:
+				pygame.quit()
+				sys.exit()
+			if game_over:
+				continue
 			if event.key == K_z:
 				piece.rotatePiece(DISPLAYSURF, 'ccw', playfield)
 				refresh(DISPLAYSURF)
@@ -77,8 +97,10 @@ while True:
 				exec('piece.movePiece("DOWN", playfield);'*20)
 				# ^^^ uuuuuuglyyyyyyy
 				addToPlayfield()
-				piece.setPiece(random.randint(0,6))
+				if 'end' == piece.setPiece(-1, playfield):
+					game_over = True
 				refresh(DISPLAYSURF)
+					
 
 
 			if event.key == K_RIGHT:
@@ -91,9 +113,6 @@ while True:
 				piece.setDirection("LEFT")
 				das_flag = True
 				refresh(DISPLAYSURF)
-			if event.key == K_RETURN:
-				pygame.quit()
-				sys.exit()
 		if event.type == KEYUP:
 			if event.key == K_RIGHT or event.key == K_LEFT:
 				das = 0
