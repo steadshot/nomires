@@ -96,6 +96,7 @@ while True:
 				playfield = [[0 for i in range(20)] for j in range(10)]
 				piece.resetHistory()
 				refresh(DISPLAYSURF)
+				pygame.draw.rect(DISPLAYSURF, (0, 0, 0), (2, 2, 50, 50), 0)
 				game_over = False
 			if event.key == K_RETURN:
 				pygame.quit()
@@ -117,6 +118,7 @@ while True:
 				# ^^^ uuuuuuglyyyyyyy
 				addToPlayfield()
 				if 'end' == piece.setPiece(piece.next_piece, playfield):
+					pygame.draw.rect(DISPLAYSURF, (255, 0, 0), (2, 2, 50, 50), 0)
 					game_over = True
 				refresh(DISPLAYSURF)
 				drawPreview(DISPLAYSURF)
