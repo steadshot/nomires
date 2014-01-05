@@ -9,6 +9,7 @@ start_x = 50
 start_y = 100
 das = 0
 das_flag = False
+soft_drop_flag = False
 
 
 def drawField(screen):
@@ -89,9 +90,8 @@ while True:
 			if event.key == K_x:
 				piece.rotatePiece(DISPLAYSURF, 'cw', playfield)
 				refresh(DISPLAYSURF)
-
 			if event.key == K_DOWN:
-
+				soft_drop_flag = True
 				piece.movePiece("DOWN", playfield)
 				refresh(DISPLAYSURF)
 			if event.key == K_UP:
@@ -101,9 +101,6 @@ while True:
 				if 'end' == piece.setPiece(-1, playfield):
 					game_over = True
 				refresh(DISPLAYSURF)
-					
-
-
 			if event.key == K_RIGHT:
 				piece.movePiece("RIGHT", playfield)
 				piece.setDirection("RIGHT")
@@ -118,6 +115,8 @@ while True:
 			if event.key == K_RIGHT or event.key == K_LEFT:
 				das = 0
 				das_flag = False
+			if event.key == K_DOWN or event.key == K_UP:
+				soft_drop_flag = False
 
 	if das_flag:
 			das += 1
