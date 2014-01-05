@@ -196,12 +196,7 @@ def collides(position, piece, field):
 	for i, line in enumerate(piece):
 		for j, x in enumerate(line):
 			if x == 1:
-				if field[piece_position[0] + i][piece_position[1] + j] == 1:
-					#print piece_position
-					#print i
-					#print j
-					#for k in field:
-					#	print k
+				if field[position[0] + i][position[1] + j] == 1:
 					return True
 	return False
 	
@@ -228,7 +223,7 @@ def movePiece(key, field):
 		piece_position = new_piece_position
 
 def setPiece(new_piece):
-	global current_piece, piece, piece_position
+	global current_piece, piece, piece_position, rotation_state
 	if new_piece == 0:
 		piece = i_piece
 	elif new_piece == 1:
@@ -243,6 +238,7 @@ def setPiece(new_piece):
 		piece = t_piece
 	elif new_piece == 6:
 		piece = o_piece
+	rotation_state = 0
 	current_piece = piece[rotation_state]
 	piece_position = (3, 0)
 
