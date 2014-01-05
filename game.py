@@ -75,6 +75,7 @@ while True:
 		if event.type == KEYDOWN:
 			if event.key == K_r:
 				playfield = [[0 for i in range(20)] for j in range(10)]
+				piece.resetHistory()
 				refresh(DISPLAYSURF)
 				game_over = False
 			if event.key == K_RETURN:

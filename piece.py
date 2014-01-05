@@ -187,6 +187,15 @@ o_piece = [
 history = deque([5, 4, 5, 4])
 first_piece = True
 
+def resetHistory():
+	global history, first_piece
+	history = deque([5, 4, 5, 4])
+	first_piece = True
+	dummy = [[0 for i in range(20)] for j in range(10)]
+	setPiece(-1, dummy)
+	first_piece = False
+
+
 def newPiece():
 	for i in range(6):
 		candidatePiece = random.randint(0, 6)
