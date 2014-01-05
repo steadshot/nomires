@@ -192,6 +192,20 @@ def getPiece():
 
 current_piece = getPiece()
 
+def collides(position, piece, field):
+	for i, line in enumerate(piece):
+		for j, x in enumerate(line):
+			if x == 1:
+				if field[piece_position[0] + i][piece_position[1] + j] == 1:
+					#print piece_position
+					#print i
+					#print j
+					#for k in field:
+					#	print k
+					return True
+	return False
+	
+
 def outOfBounds(position, piece):
 	for i, line in enumerate(piece):
 		for j,x in enumerate(line):
@@ -200,7 +214,7 @@ def outOfBounds(position, piece):
 					return True
 	return False
 
-def movePiece(key):
+def movePiece(key, field):
 	global piece_position
 	if key == "DOWN":
 		new_piece_position = (piece_position[0], piece_position[1] + 1)
@@ -210,10 +224,11 @@ def movePiece(key):
 		new_piece_position = (piece_position[0] - 1, piece_position[1])
 	elif key == "RIGHT":
 		new_piece_position = (piece_position[0] + 1, piece_position[1])
-	if not outOfBounds(new_piece_position, getPiece()):
+	if (not outOfBounds(new_piece_position, getPiece())) and (not collides(new_piece_position, getPiece(), field)):
 		piece_position = new_piece_position
 
 def setPiece(new_piece):
+	global current_piece, piece, piece_position
 	if new_piece == 0:
 		piece = i_piece
 	elif new_piece == 1:
@@ -228,6 +243,9 @@ def setPiece(new_piece):
 		piece = t_piece
 	elif new_piece == 6:
 		piece = o_piece
+	current_piece = piece[rotation_state]
+	piece_position = (3, 0)
+
 
 
 def rotatePiece(screen, rotation):

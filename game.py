@@ -39,7 +39,15 @@ def refresh(screen):
 
 
 
+def addToPlayfield():
+	for i, line in enumerate(piece.getPiece()):
+		for j, x in enumerate(line):
+			if x == 1:
+				playfield[piece.piece_position[0] + i][piece.piece_position[1] + j] = 1
 
+def printField():
+	for line in playfield:
+		print line
 
 pygame.init()
 DISPLAYSURF = pygame.display.set_mode((800, 600))
@@ -60,17 +68,21 @@ while True:
 
 			if event.key == K_DOWN:
 
-				piece.movePiece("DOWN")
+				piece.movePiece("DOWN", playfield)
 				refresh(DISPLAYSURF)
 			if event.key == K_UP:
+				exec('piece.movePiece("DOWN", playfield);'*20)
+				# ^^^ uuuuuuglyyyyyyy
+				addToPlayfield()
 				piece.setPiece(random.randint(0,6))
-				current_piece = piece.getPiece()
 				refresh(DISPLAYSURF)
+
+
 			if event.key == K_RIGHT:
-				piece.movePiece("RIGHT")
+				piece.movePiece("RIGHT", playfield)
 				refresh(DISPLAYSURF)
 			if event.key == K_LEFT:
-				piece.movePiece("LEFT")
+				piece.movePiece("LEFT", playfield)
 				refresh(DISPLAYSURF)
 			if event.key == K_RETURN:
 				pygame.quit()
