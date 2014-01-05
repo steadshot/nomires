@@ -84,7 +84,7 @@ def createsHoles():
 	for i, line in enumerate(piece.getPiece()):
 		for j, x in enumerate(line[::-1]):
 			if x == 1 and piece.piece_position[1] + 4 - j < 20:
-				if playfield[piece.piece_position[0] + i][piece.piece_position[1] + 3 - j + 1] == 0:
+				if playfield[piece.piece_position[0] + i][piece.piece_position[1] + 3 - j] == 1 and playfield[piece.piece_position[0] + i][piece.piece_position[1] + 3 - j + 1] == 0:
 					return True
 				else:
 					break
