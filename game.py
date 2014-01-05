@@ -7,6 +7,8 @@ block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
 start_x = 50
 start_y = 100
+das = 0
+das_flag = False
 
 
 def drawField(screen):
@@ -52,6 +54,7 @@ def printField():
 pygame.init()
 DISPLAYSURF = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('nomires - where tetris goes to die')
+clock = pygame.time.Clock()
 refresh(DISPLAYSURF)
 while True:
 	for event in pygame.event.get():
@@ -60,10 +63,10 @@ while True:
 			sys.exit()
 		if event.type == KEYDOWN:
 			if event.key == K_z:
-				piece.rotatePiece(DISPLAYSURF, 'ccw')
+				piece.rotatePiece(DISPLAYSURF, 'ccw', playfield)
 				refresh(DISPLAYSURF)
 			if event.key == K_x:
-				piece.rotatePiece(DISPLAYSURF, 'cw')
+				piece.rotatePiece(DISPLAYSURF, 'cw', playfield)
 				refresh(DISPLAYSURF)
 
 			if event.key == K_DOWN:
@@ -80,11 +83,26 @@ while True:
 
 			if event.key == K_RIGHT:
 				piece.movePiece("RIGHT", playfield)
+				piece.setDirection("RIGHT")
+				das_flag = True
 				refresh(DISPLAYSURF)
 			if event.key == K_LEFT:
 				piece.movePiece("LEFT", playfield)
+				piece.setDirection("LEFT")
+				das_flag = True
 				refresh(DISPLAYSURF)
 			if event.key == K_RETURN:
 				pygame.quit()
 				sys.exit()
-		pygame.display.update()
+		if event.type == KEYUP:
+			if event.key == K_RIGHT or event.key == K_LEFT:
+				das = 0
+				das_flag = False
+
+	if das_flag:
+			das += 1
+	if das >= 12:
+			piece.movePiece(piece.getDirection(), playfield)
+			refresh(DISPLAYSURF)
+	pygame.display.update()
+	clock.tick(60)

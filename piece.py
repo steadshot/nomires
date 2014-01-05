@@ -191,6 +191,15 @@ def getPiece():
 
 
 current_piece = getPiece()
+piece_direction = "RIGHT"
+
+def setDirection(direction):
+	global piece_direction
+	piece_direction = direction
+
+def getDirection():
+	global piece_direction
+	return piece_direction
 
 def collides(position, piece, field):
 	for i, line in enumerate(piece):
@@ -244,17 +253,17 @@ def setPiece(new_piece):
 
 
 
-def rotatePiece(screen, rotation):
+def rotatePiece(screen, rotation, field):
 	global current_piece
 	if rotation == "cw":
 		rotate('cw')
-		if not outOfBounds(piece_position, getPiece()):
+		if not outOfBounds(piece_position, getPiece()) and not collides(piece_position, getPiece(), field):
 			current_piece = getPiece()
 		else:
 			rotate('ccw')
 	elif rotation == "ccw":
 		rotate('ccw')
-		if not outOfBounds(piece_position, getPiece()):
+		if not outOfBounds(piece_position, getPiece()) and not collides(piece_position, getPiece(), field):
 			current_piece = getPiece()
 		else:
 			rotate('cw')
