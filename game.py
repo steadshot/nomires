@@ -5,7 +5,7 @@ import random
 
 # only for testing purposes
 import os
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
+#os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
 
 block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
@@ -74,6 +74,21 @@ def addToPlayfield():
 			for j in range(1, i + 1)[::-1]:
 				flipped[j] = flipped[j - 1]
 	playfield = [[flipped[i][j] for i in range(20)] for j in range(10)]
+	if createsHoles():
+		print "REGRET!"
+	else:
+		print "COOL!!"
+
+def createsHoles():
+	global playfield
+	for i, line in enumerate(piece.getPiece()):
+		for j, x in enumerate(line[::-1]):
+			if x == 1 and piece.piece_position[1] + 4 - j < 20:
+				if playfield[piece.piece_position[0] + i][piece.piece_position[1] + 3 - j + 1] == 0:
+					return True
+				else:
+					break
+	return False
 
 def printField():
 	for line in playfield:
