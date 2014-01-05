@@ -3,14 +3,31 @@ from pygame.locals import *
 import piece
 import random
 
+# only for testing purposes
+import os
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
+
 block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
 start_x = 50
-start_y = 100
+start_y = 140
+preview_x = start_x + 3 * block_size
+preview_y = start_y - 5 * block_size
 das = 0
 das_flag = False
 soft_drop_flag = False
 
+def drawPreview(screen):
+	x = piece.nextPiece()
+	str = 'ILJSZTO'.lower()
+	exec('piece = piece.' + str[x] + '_piece[0]')
+	for i, line in enumerate(piece):
+		for j, x in enumerate(line):
+			if x == 1:
+				pygame.draw.rect(screen, (255, 255, 255), (preview_x + i * block_size, preview_y + j * block_size, block_size, block_size), 0)
+			else:
+				pygame.draw.rect(screen, (0, 0, 0), (preview_x + i * block_size, preview_y + j * block_size, block_size, block_size), 0)
+	pygame.draw.rect(screen, (255, 255, 255), (preview_x, preview_y, block_size * 4, block_size * 4), 1)
 
 def drawField(screen):
 	"""draws a field, big whoop"""
@@ -67,6 +84,7 @@ DISPLAYSURF = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('nomires - where tetris goes to die')
 clock = pygame.time.Clock()
 refresh(DISPLAYSURF)
+drawPreview(DISPLAYSURF)
 game_over = False
 while True:
 	for event in pygame.event.get():
@@ -98,9 +116,10 @@ while True:
 				exec('piece.movePiece("DOWN", playfield);'*20)
 				# ^^^ uuuuuuglyyyyyyy
 				addToPlayfield()
-				if 'end' == piece.setPiece(-1, playfield):
+				if 'end' == piece.setPiece(piece.next_piece, playfield):
 					game_over = True
 				refresh(DISPLAYSURF)
+				drawPreview(DISPLAYSURF)
 			if event.key == K_RIGHT:
 				piece.movePiece("RIGHT", playfield)
 				piece.setDirection("RIGHT")

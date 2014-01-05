@@ -1,5 +1,6 @@
 import random
 from collections import deque
+import copy
 
 t_piece = [
 		[
@@ -184,17 +185,7 @@ o_piece = [
 		]
 	]
 
-history = deque([5, 4, 5, 4])
-first_piece = True
-
-def resetHistory():
-	global history, first_piece
-	history = deque([5, 4, 5, 4])
-	first_piece = True
-	dummy = [[0 for i in range(20)] for j in range(10)]
-	setPiece(-1, dummy)
-	first_piece = False
-
+next_piece = 0
 
 def newPiece():
 	for i in range(6):
@@ -206,8 +197,25 @@ def newPiece():
 
 	history.append(candidatePiece)
 	history.popleft()
-	print history
+	#print history
 	return candidatePiece
+
+history = deque([3, 4, 3, 4])
+first_piece = True
+
+def nextPiece():
+	return next_piece
+
+
+def resetHistory():
+	global history, first_piece
+	history = deque([3, 4, 3, 4])
+	first_piece = True
+	dummy = [[0 for i in range(20)] for j in range(10)]
+	setPiece(-1, dummy)
+	first_piece = False
+
+
 
 def collides(position, piece, field):
 	for i, line in enumerate(piece):
@@ -218,7 +226,7 @@ def collides(position, piece, field):
 	return False
 
 def setPiece(new_piece, field):
-	global current_piece, piece, piece_position, rotation_state
+	global current_piece, piece, piece_position, rotation_state, next_piece
 
 	if new_piece == -1:
 		new_piece = newPiece()
@@ -240,6 +248,7 @@ def setPiece(new_piece, field):
 	rotation_state = 0
 	current_piece = piece[rotation_state]
 	piece_position = (3, 0)
+	next_piece = newPiece()
 	if collides(piece_position, current_piece, field):
 		#print 'alles hat ein ende, nur die wurst hat zwei'
 		return 'end'
