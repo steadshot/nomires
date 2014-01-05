@@ -120,6 +120,9 @@ while True:
 
 	if das_flag:
 			das += 1
+	if soft_drop_flag:
+		piece.movePiece("DOWN", playfield)
+		refresh(DISPLAYSURF)
 	if das >= 12:
 			piece.movePiece(piece.getDirection(), playfield)
 			refresh(DISPLAYSURF)
