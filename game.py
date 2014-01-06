@@ -5,7 +5,7 @@ import random
 
 # only for testing purposes
 import os
-#os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
 
 block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
@@ -57,12 +57,19 @@ def drawBorder(screen):
 				(start_x + 10 * block_size, start_y + 20 * block_size), 
 				(start_x, start_y + 20 * block_size), (start_x, start_y)], 1)
 
+def drawGrid(screen):
+	for i in range(10):
+		pygame.draw.lines(screen, (255, 255, 255), False, 
+				[(start_x + i * block_size, start_y), (start_x + i * block_size, start_y + 20 * block_size)], 1)
+
+
 
 def refresh(screen):
 	drawEmptyField(screen)
 	#drawField(screen)
 	drawPiece(screen)
 	drawBorder(screen)
+	drawGrid(screen)
 
 
 def addToPlayfield():
@@ -84,8 +91,8 @@ def addToPlayfield():
 	global game_over
 	if createsHoles():
 		print "REGRET!"
-		#game_over = True
-		#pygame.draw.rect(DISPLAYSURF, (255, 0, 0), (2, 2, 50, 50), 0)
+		game_over = True
+		pygame.draw.rect(DISPLAYSURF, (255, 0, 0), (2, 2, 50, 50), 0)
 	else:
 		print "COOL!!"
 
@@ -104,6 +111,7 @@ def printField():
 	for line in playfield:
 		print line
 
+piece_counter = 1
 pygame.init()
 DISPLAYSURF = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('nomires - where tetris goes to die')
@@ -124,6 +132,7 @@ while True:
 				drawPreview(DISPLAYSURF)
 				pygame.draw.rect(DISPLAYSURF, (0, 0, 0), (2, 2, 50, 50), 0)
 				game_over = False
+				piece_counter = 1
 			if event.key == K_RETURN:
 				pygame.quit()
 				sys.exit()
@@ -142,8 +151,18 @@ while True:
 			if event.key == K_UP:
 				exec('piece.movePiece("DOWN", playfield);'*20)
 				# ^^^ uuuuuuglyyyyyyy
+				drawEmptyField(DISPLAYSURF)
+				if piece_counter % 5 == 0:
+					drawField(DISPLAYSURF)
+				drawPiece(DISPLAYSURF)
+				drawBorder(DISPLAYSURF)
+				drawGrid(DISPLAYSURF)
+				pygame.display.update()
+				pygame.time.wait(1000)
+				drawEmptyField(DISPLAYSURF)
 				addToPlayfield()
-				if 'end' == piece.setPiece(piece.next_piece, playfield):
+				piece_counter += 1
+				if 'end' == piece.setPiece(piece.next_piece, playfield) or game_over:
 					pygame.draw.rect(DISPLAYSURF, (255, 0, 0), (2, 2, 50, 50), 0)
 					drawField(DISPLAYSURF)
 					drawBorder(DISPLAYSURF)
