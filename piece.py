@@ -197,7 +197,7 @@ def newPiece():
 
 	history.append(candidatePiece)
 	history.popleft()
-	#print history
+	print history
 	return candidatePiece
 
 history = deque([3, 4, 3, 4])
@@ -208,11 +208,12 @@ def nextPiece():
 
 
 def resetHistory():
-	global history, first_piece
+	global history, first_piece, next_piece
 	history = deque([3, 4, 3, 4])
 	first_piece = True
 	dummy = [[0 for i in range(20)] for j in range(10)]
 	setPiece(-1, dummy)
+	next_piece = newPiece()
 	first_piece = False
 
 

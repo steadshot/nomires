@@ -5,7 +5,7 @@ import random
 
 # only for testing purposes
 import os
-#os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
 
 block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
@@ -28,6 +28,12 @@ def drawPreview(screen):
 			else:
 				pygame.draw.rect(screen, (0, 0, 0), (preview_x + i * block_size, preview_y + j * block_size, block_size, block_size), 0)
 	pygame.draw.rect(screen, (255, 255, 255), (preview_x, preview_y, block_size * 4, block_size * 4), 1)
+
+def drawEmptyField(screen):
+	"""draws a field, big whoop"""
+	for i, line in enumerate(playfield):
+		for j, x in enumerate(line):
+			pygame.draw.rect(screen, (0, 0, 0), (start_x + i * block_size, start_y + j * block_size, block_size, block_size), 0)
 
 def drawField(screen):
 	"""draws a field, big whoop"""
@@ -53,6 +59,7 @@ def drawBorder(screen):
 
 
 def refresh(screen):
+	#drawEmptyField(screen)
 	drawField(screen)
 	drawPiece(screen)
 	drawBorder(screen)
@@ -74,8 +81,11 @@ def addToPlayfield():
 			for j in range(1, i + 1)[::-1]:
 				flipped[j] = flipped[j - 1]
 	playfield = [[flipped[i][j] for i in range(20)] for j in range(10)]
+	global game_over
 	if createsHoles():
 		print "REGRET!"
+		#game_over = True
+		#pygame.draw.rect(DISPLAYSURF, (255, 0, 0), (2, 2, 50, 50), 0)
 	else:
 		print "COOL!!"
 
@@ -111,6 +121,7 @@ while True:
 				playfield = [[0 for i in range(20)] for j in range(10)]
 				piece.resetHistory()
 				refresh(DISPLAYSURF)
+				drawPreview(DISPLAYSURF)
 				pygame.draw.rect(DISPLAYSURF, (0, 0, 0), (2, 2, 50, 50), 0)
 				game_over = False
 			if event.key == K_RETURN:
