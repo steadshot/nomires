@@ -5,7 +5,7 @@ import random
 
 # only for testing purposes
 import os
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
+#os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (-1300, 100)
 
 block_size = 20
 playfield = [[0 for i in range(20)] for j in range(10)]
@@ -59,8 +59,8 @@ def drawBorder(screen):
 
 
 def refresh(screen):
-	#drawEmptyField(screen)
-	drawField(screen)
+	drawEmptyField(screen)
+	#drawField(screen)
 	drawPiece(screen)
 	drawBorder(screen)
 
@@ -145,9 +145,12 @@ while True:
 				addToPlayfield()
 				if 'end' == piece.setPiece(piece.next_piece, playfield):
 					pygame.draw.rect(DISPLAYSURF, (255, 0, 0), (2, 2, 50, 50), 0)
+					drawField(DISPLAYSURF)
+					drawBorder(DISPLAYSURF)
 					game_over = True
-				refresh(DISPLAYSURF)
-				drawPreview(DISPLAYSURF)
+				else:
+					refresh(DISPLAYSURF)
+					drawPreview(DISPLAYSURF)
 			if event.key == K_RIGHT:
 				piece.movePiece("RIGHT", playfield)
 				piece.setDirection("RIGHT")
@@ -158,12 +161,17 @@ while True:
 				piece.setDirection("LEFT")
 				das_flag = True
 				refresh(DISPLAYSURF)
+			if event.key == K_w:
+				drawField(DISPLAYSURF)
+				drawBorder(DISPLAYSURF)
 		if event.type == KEYUP:
 			if event.key == K_RIGHT or event.key == K_LEFT:
 				das = 0
 				das_flag = False
 			if event.key == K_DOWN or event.key == K_UP:
 				soft_drop_flag = False
+			if event.key == K_w:
+				refresh(DISPLAYSURF)
 
 	if das_flag:
 			das += 1
