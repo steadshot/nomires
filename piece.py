@@ -124,8 +124,13 @@ def movePiece(key, field):
 def rotatePiece(screen, rotation, field):
 	global current_piece, piece_position
 	x,y = piece_position
+	# for wall kicks: try basic rotation, 1 space right of basic rotation, 1 space left of basic rotation
+	# TODO: implement exceptions
+	# final (x, y) is for when all three tries fail, to set the piece_position to its original position
+	# having to change the piece_position itself is wacky
+	# rotating back and forth all the time ain't pretty either,
+	# we should have getter methods and not manipulate global variables all the time
 	positions = [(x, y), (x + 1, y), (x - 1, y), (x, y)]
-	print positions
 	for pos in positions:
 		piece_position = pos
 		if rotation == "cw":
