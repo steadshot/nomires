@@ -1,191 +1,14 @@
 import random
 from collections import deque
-import copy
 
-t_piece = [
-		[
-		[0, 1, 0, 0],
-		[0, 1, 1, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 1, 0, 0],
-		[1, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 1, 0, 0],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		]
-	]
-i_piece = [
-		[
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0],
-		]
-	]
-l_piece = [
-		[
-		[0, 1, 1, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[1, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		]
-	]
-j_piece = [
-		[
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[1, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 1, 0],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		]
-	]
-s_piece = [
-		[
-		[0, 0, 1, 0],
-		[0, 1, 1, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[1, 1, 0, 0],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 1, 0],
-		[0, 1, 1, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[1, 1, 0, 0],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		]
-	]
-z_piece = [
-		[
-		[0, 1, 0, 0],
-		[0, 1, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 1, 1, 0],
-		[1, 1, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 1, 0, 0],
-		[0, 1, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 1, 1, 0],
-		[1, 1, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		]
-	]
-o_piece = [
-		[
-		[0, 0, 0, 0],
-		[1, 1, 0, 0],
-		[1, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[1, 1, 0, 0],
-		[1, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[1, 1, 0, 0],
-		[1, 1, 0, 0],
-		[0, 0, 0, 0],
-		],
-		[
-		[0, 0, 0, 0],
-		[1, 1, 0, 0],
-		[1, 1, 0, 0],
-		[0, 0, 0, 0],
-		]
-	]
+t_piece = [ [ [0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 1, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], ] ]
+i_piece = [ [ [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], ], [ [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], ], [ [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], ], [ [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], ] ]
+l_piece = [ [ [0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0], ], [ [0, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], ], [ [1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], ] ]
+j_piece = [ [ [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], ], [ [0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0], ], [ [1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], ] ]
+s_piece = [ [ [0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0], ], [ [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], ], [ [0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0], ], [ [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], ] ]
+z_piece = [ [ [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0], ], [ [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], ], [ [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0], ], [ [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], ] ]
+o_piece = [ [ [0, 0, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 0, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 0, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], ], [ [0, 0, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], ] ]
 
-next_piece = 0
 
 def newPiece():
 	for i in range(6):
@@ -197,11 +20,9 @@ def newPiece():
 
 	history.append(candidatePiece)
 	history.popleft()
-	print history
+	#print history
 	return candidatePiece
 
-history = deque([3, 4, 3, 4])
-first_piece = True
 
 def nextPiece():
 	return next_piece
@@ -258,18 +79,11 @@ def setPiece(new_piece, field):
 	
 
 
-rotation_state = 0
-piece_position = (3, 0)
 
 
 def getPiece():
 	return piece[rotation_state]
 
-dummy = [[0 for i in range(20)] for j in range(10)]
-setPiece(-1, dummy)
-first_piece = False
-
-piece_direction = "RIGHT"
 
 def setDirection(direction):
 	global piece_direction
@@ -301,24 +115,33 @@ def movePiece(key, field):
 		new_piece_position = (piece_position[0] + 1, piece_position[1])
 	if (not outOfBounds(new_piece_position, getPiece())) and (not collides(new_piece_position, getPiece(), field)):
 		piece_position = new_piece_position
+	else:
+		return -1
 
 
 
 
 def rotatePiece(screen, rotation, field):
-	global current_piece
-	if rotation == "cw":
-		rotate('cw')
-		if not outOfBounds(piece_position, getPiece()) and not collides(piece_position, getPiece(), field):
-			current_piece = getPiece()
-		else:
-			rotate('ccw')
-	elif rotation == "ccw":
-		rotate('ccw')
-		if not outOfBounds(piece_position, getPiece()) and not collides(piece_position, getPiece(), field):
-			current_piece = getPiece()
-		else:
+	global current_piece, piece_position
+	x,y = piece_position
+	positions = [(x, y), (x + 1, y), (x - 1, y), (x, y)]
+	print positions
+	for pos in positions:
+		piece_position = pos
+		if rotation == "cw":
 			rotate('cw')
+			if not outOfBounds(pos, getPiece()) and not collides(pos, getPiece(), field):
+				current_piece = getPiece()
+				break
+			else:
+				rotate('ccw')
+		elif rotation == "ccw":
+			rotate('ccw')
+			if not outOfBounds(pos, getPiece()) and not collides(pos, getPiece(), field):
+				current_piece = getPiece()
+				break
+			else:
+				rotate('cw')
 
 def rotate(direction):
 	global rotation_state
@@ -326,3 +149,16 @@ def rotate(direction):
 		rotation_state = (rotation_state - 1) % 4
 	elif direction == "ccw":
 		rotation_state = (rotation_state + 1) % 4
+
+next_piece = 0
+history = deque([3, 4, 3, 4])
+first_piece = True
+
+rotation_state = 0
+piece_position = (3, 0)
+
+dummy = [[0 for i in range(20)] for j in range(10)]
+setPiece(-1, dummy)
+first_piece = False
+
+piece_direction = "RIGHT"
