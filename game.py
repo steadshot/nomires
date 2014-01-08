@@ -153,24 +153,46 @@ pygame.display.set_caption('nomires - where tetris goes to die')
 clock = pygame.time.Clock()
 refresh(DISPLAYSURF)
 game_over = False
+
+controls = {
+		'up': 'UP',
+		'down': 'DOWN',
+		'left': 'LEFT',
+		'right': 'RIGHT',
+		'quit': 'RETURN',
+		'restart': 'r',
+		'ccw': 'z',
+		'cw': 'x',
+		'peek': 'w',
+		}
+
+# little hack, because it really annoys me that the rotation is 'backwards'
+import os.path
+if os.path.isfile(r'C:\onestop.mid'):
+	controls['ccw'] = 'x'
+	controls['cw'] = 'z'
+
+def getControl(x):
+	return eval("K_" + controls[x])
+
 while True:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			quit()
 		if event.type == KEYDOWN:
-			if event.key == K_r:
+			if event.key == getControl('restart'):
 				reset()
-			if event.key == K_RETURN:
+			if event.key == getControl('quit'):
 				quit()
 			if game_over:
 				continue
-			if event.key == K_z:
+			if event.key == getControl('ccw'):
 				piece.rotatePiece(DISPLAYSURF, 'ccw', playfield)
 				refresh(DISPLAYSURF)
-			if event.key == K_x:
+			if event.key == getControl('cw'):
 				piece.rotatePiece(DISPLAYSURF, 'cw', playfield)
 				refresh(DISPLAYSURF)
-			if event.key == K_DOWN:
+			if event.key == getControl('down'):
 				#soft drop
 				#soft_drop_flag = True
 				#piece.movePiece("DOWN", playfield)
@@ -181,7 +203,7 @@ while True:
 				while x != -1:
 					x = piece.movePiece("DOWN", playfield)
 				refresh(DISPLAYSURF)
-			if event.key == K_UP:
+			if event.key == getControl('up'):
 				x = 0
 				while x != -1:
 					x = piece.movePiece("DOWN", playfield)
@@ -197,17 +219,17 @@ while True:
 				#drawEmptyField(DISPLAYSURF)
 
 				lock()
-			if event.key == K_RIGHT:
+			if event.key == getControl('right'):
 				piece.movePiece("RIGHT", playfield)
 				piece.setDirection("RIGHT")
 				das_flag = True
 				refresh(DISPLAYSURF)
-			if event.key == K_LEFT:
+			if event.key == getControl('left'):
 				piece.movePiece("LEFT", playfield)
 				piece.setDirection("LEFT")
 				das_flag = True
 				refresh(DISPLAYSURF)
-			if event.key == K_w:
+			if event.key == getControl('peek'):
 				#drawField(DISPLAYSURF)
 				#drawGrid(DISPLAYSURF)
 				#drawBorder(DISPLAYSURF)
@@ -216,12 +238,12 @@ while True:
 					refresh(DISPLAYSURF)
 					invisible_flag = True
 		if event.type == KEYUP:
-			if event.key == K_RIGHT or event.key == K_LEFT:
+			if event.key == getControl('right') or event.key == getControl('left'):
 				das = 0
 				das_flag = False
-			if event.key == K_DOWN or event.key == K_UP:
+			if event.key == getControl('down') or event.key == getControl('up'):
 				soft_drop_flag = False
-			if event.key == K_w:
+			if event.key == getControl('peek'):
 				refresh(DISPLAYSURF)
 
 	if das_flag:
