@@ -76,10 +76,11 @@ def addToPlayfield():
 
 	flipped = [[playfield[i][j] for i in range(10)] for j in range(20)]
 	for i, line in enumerate(flipped):
-		if reduce(lambda x,y: x + y, line) == 10:
+		if sum(line) == 10:
 			flipped[i] = [0]*10
 			for j in range(1, i + 1)[::-1]:
 				flipped[j] = flipped[j - 1]
+			flipped[0] = [0]*10
 	playfield = [[flipped[i][j] for i in range(20)] for j in range(10)]
 
 	#check for holes
