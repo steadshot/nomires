@@ -145,6 +145,9 @@ das = 0
 das_flag = False
 soft_drop_flag = False
 invisible_flag = False
+# right and left respectively
+is_down = [0,0]
+no_shift = [0,0]
 WHITE = (255, 255, 255)
 
 piece_counter = 1
@@ -223,11 +226,13 @@ while True:
 			if event.key == getControl('right'):
 				piece.movePiece("RIGHT", playfield)
 				piece.setDirection("RIGHT")
+				is_down[0] = 1
 				das_flag = True
 				refresh(DISPLAYSURF)
 			if event.key == getControl('left'):
 				piece.movePiece("LEFT", playfield)
 				piece.setDirection("LEFT")
+				is_down[1] = 1
 				das_flag = True
 				refresh(DISPLAYSURF)
 			if event.key == getControl('peek'):
@@ -239,13 +244,21 @@ while True:
 					refresh(DISPLAYSURF)
 					invisible_flag = True
 		if event.type == KEYUP:
-			if event.key == getControl('right') or event.key == getControl('left'):
-				das = 0
-				das_flag = False
+			if event.key == getControl('right'):
+				is_down[0] = 0
+				if is_down[1]:
+					piece.setDirection("LEFT")
+			if event.key == getControl('left'):
+				is_down[1] = 0
+				if is_down[0]:
+					piece.setDirection("RIGHT")
 			if event.key == getControl('down') or event.key == getControl('up'):
 				soft_drop_flag = False
 			if event.key == getControl('peek'):
 				refresh(DISPLAYSURF)
+			if is_down == [0,0]:
+				das = 0
+				das_flag = False
 
 	if das_flag:
 			das += 1
