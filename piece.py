@@ -53,20 +53,10 @@ def setPiece(new_piece, field):
 	if new_piece == -1:
 		new_piece = newPiece()
 
-	if new_piece == 0:
-		piece = i_piece
-	elif new_piece == 1:
-		piece = l_piece
-	elif new_piece == 2:
-		piece = j_piece
-	elif new_piece == 3:
-		piece = s_piece
-	elif new_piece == 4:
-		piece = z_piece
-	elif new_piece == 5:
-		piece = t_piece
-	elif new_piece == 6:
-		piece = o_piece
+	pieces = 'iljszto'
+	piece = eval(pieces[new_piece] + "_piece")
+
+
 	rotation_state = 0
 	current_piece = piece[rotation_state]
 	piece_position = (3, 0)
@@ -74,12 +64,6 @@ def setPiece(new_piece, field):
 	if collides(piece_position, current_piece, field):
 		#print 'alles hat ein ende, nur die wurst hat zwei'
 		return 'end'
-
-
-	
-
-
-
 
 def getPiece():
 	return piece[rotation_state]

@@ -148,6 +148,8 @@ invisible_flag = False
 # right and left respectively
 is_down = [0,0]
 WHITE = (255, 255, 255)
+dt = 0
+time_elapsed = 0
 
 piece_counter = 1
 pygame.init()
@@ -171,7 +173,7 @@ controls = {
 
 # little hack, because it really annoys me that the rotation is 'backwards'
 import os.path
-if os.path.isfile(r'C:\onestop.mid'):
+if os.path.isfile(r'C:\onestop.mid') or os.path.isfile('/home/nom'):
 	controls['ccw'] = 'x'
 	controls['cw'] = 'z'
 
@@ -222,6 +224,7 @@ while True:
 				#drawEmptyField(DISPLAYSURF)
 
 				lock()
+				time_elapsed = 0
 			if event.key == getControl('right'):
 				piece.movePiece("RIGHT", playfield)
 				piece.setDirection("RIGHT")
@@ -272,5 +275,10 @@ while True:
 	if das >= 12:
 			piece.movePiece(piece.getDirection(), playfield)
 			refresh(DISPLAYSURF)
+	time_elapsed += dt
+	if time_elapsed >= 1000:
+		piece.movePiece("DOWN", playfield)
+		refresh(DISPLAYSURF)
+		time_elapsed = 0
 	pygame.display.update()
-	clock.tick(60)
+	dt = clock.tick(60)
